@@ -5,6 +5,11 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FM.AzureTableExtensions.Library", "FM.AzureTableExtensions.Library\FM.AzureTableExtensions.Library.csproj", "{2953BC21-F457-42AB-9761-03B7DCBB1825}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{57148580-DCCB-4124-BA63-C654C8341159}"
+	ProjectSection(SolutionItems) = preProject
+		nuget.config = nuget.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
