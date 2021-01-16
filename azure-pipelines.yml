@@ -49,7 +49,7 @@ stages:
       displayName: "Pack FM.AzureTableExtensions.Library"
       inputs:
         command: pack
-        packagesToPack: '$(Build.SourcesDirectory)/src/FM.AureTableExtensions.Library/FM.AzureTableExtensions.Library.csproj'
+        packagesToPack: '$(Build.SourcesDirectory)/src/FM.AzureTableExtensions.Library/FM.AzureTableExtensions.Library.csproj'
         packDestination: '$(Build.ArtifactStagingDirectory)'
         buildProperties: 'Version="$(versionMajor).$(versionMinor).$(Build.BuildId)"'
 
