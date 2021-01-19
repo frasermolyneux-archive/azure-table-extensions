@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Fraser Molyneux</Authors>
+    <Product>FM AzureTableExtensions</Product>
+    <Description>This package provides extensions to the TableEntity class allowing Enum and Object serialisation.</Description>
+    <Copyright>GNUv3</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
