@@ -22,7 +22,7 @@ stages:
   jobs:
   - job: build
     pool:
-      vmImage: 'windows-latest'
+      vmImage: 'ubuntu-latest'
 
     variables:
       solution: '**/*.sln'
@@ -53,10 +53,19 @@ stages:
         packDestination: '$(Build.ArtifactStagingDirectory)'
         buildProperties: 'Version="$(versionMajor).$(versionMinor).$(Build.BuildId)"'
 
-    - task: NuGetCommand@2
-      displayName: 'NuGet push'
-      inputs:
-        command: push
-        packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-        publishVstsFeed: 'f6b61452-5280-47a1-b802-b2cfc8630b77/c57e8cd1-2aa2-4c0d-96cb-450405f73d4d'
-      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+- stage: publish
+  jobs:
+    - job: publish
+      pool:
+        vmImage: 'ubuntu-latest'
+
+      steps:
+      - task: NuGetToolInstaller@1
+      
+      - task: NuGetCommand@2
+        displayName: 'NuGet push'
+        inputs:
+          command: push
+          packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+          publishVstsFeed: 'f6b61452-5280-47a1-b802-b2cfc8630b77/c57e8cd1-2aa2-4c0d-96cb-450405f73d4d'
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
