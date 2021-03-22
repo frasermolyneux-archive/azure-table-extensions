@@ -10,9 +10,6 @@ schedules:
       include:
       - main
 
-pool:
-  vmImage: 'ubuntu-latest'
-
 variables:
   versionMajor: 1
   versionMinor: 0
@@ -22,7 +19,7 @@ stages:
   jobs:
   - job: build
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: 'windows-latest'
 
     variables:
       solution: '**/*.sln'
@@ -57,11 +54,11 @@ stages:
   jobs:
     - job: publish
       pool:
-        vmImage: 'ubuntu-latest'
+        vmImage: 'windows-latest'
 
       steps:
       - task: NuGetToolInstaller@1
-      
+
       - task: NuGetCommand@2
         displayName: 'NuGet push'
         inputs:
