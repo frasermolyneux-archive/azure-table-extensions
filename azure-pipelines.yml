@@ -50,6 +50,14 @@ stages:
         packDestination: '$(Build.ArtifactStagingDirectory)'
         buildProperties: 'Version="$(versionMajor).$(versionMinor).$(Build.BuildId)"'
 
+    - task: DotNetCoreCLI@2
+      displayName: "Pack FM.AzureTableLogger"
+      inputs:
+        command: pack
+        packagesToPack: '$(Build.SourcesDirectory)/src/FM.AzureTableLogger/FM.AzureTableLogger.csproj'
+        packDestination: '$(Build.ArtifactStagingDirectory)'
+        buildProperties: 'Version="$(versionMajor).$(versionMinor).$(Build.BuildId)"'
+
     - publish: $(Build.artifactStagingDirectory)
       displayName: Publish NuGet artifact
       artifact: nuget
