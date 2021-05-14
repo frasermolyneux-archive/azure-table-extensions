@@ -11,13 +11,11 @@ namespace FM.AzureTableLogger.Extensions
             Action<AzureTableLoggerOptions> options)
         {
             serviceCollection.Configure(options);
-            serviceCollection.AddScoped<AzureTableLogger>();
+            // Add singleton instance that can be injected directly to provide access to health check and clean up functions
+            serviceCollection.AddSingleton<AzureTableLogger>();
 
             serviceCollection.AddLogging(
-                logging =>
-                {
-                    logging.AddAzureTableLogger();
-                });
+                logging => { logging.AddAzureTableLogger(); });
         }
     }
 }
