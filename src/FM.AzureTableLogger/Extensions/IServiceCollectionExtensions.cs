@@ -12,6 +12,12 @@ namespace FM.AzureTableLogger.Extensions
         {
             serviceCollection.Configure(options);
             serviceCollection.AddScoped<AzureTableLogger>();
+
+            serviceCollection.AddLogging(
+                logging =>
+                {
+                    logging.AddAzureTableLogger();
+                });
         }
     }
 }
