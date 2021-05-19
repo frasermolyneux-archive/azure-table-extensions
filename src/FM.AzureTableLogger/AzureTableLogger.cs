@@ -72,6 +72,12 @@ namespace FM.AzureTableLogger
             if (!IsEnabled(logLevel))
                 return;
 
+            if (string.IsNullOrWhiteSpace(formatter(state, exception)) && exception == null)
+                return;
+
+            if (_options.Value.ExcludeEventIds.Contains(eventId.ToString()))
+                return;
+
             var username = "anon";
             var requestId = "N/A";
 
