@@ -77,7 +77,7 @@ namespace FM.AzureTableLogger
 
         public bool IsEnabled(LogLevel logLevel)
         {
-            return _options.Value.MinimumLogLevel > logLevel;
+            return _options.Value.MinimumLogLevel < logLevel;
         }
 
         public IDisposable BeginScope<TState>(TState state)
