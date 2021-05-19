@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using FM.AzureTableLogger.CloudEntities;
 using FM.AzureTableLogger.Config;
+using FM.AzureTableLogger.Factories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Logging;
@@ -14,17 +16,31 @@ namespace FM.AzureTableLogger
     {
         private readonly CloudTableClient _cloudTableClient;
         private readonly IHttpContextAccessor _httpContextAccessor;
+
+        private readonly Dictionary<LogLevel, int> _logLevels = new Dictionary<LogLevel, int>
+        {
+            {LogLevel.Trace, 1},
+            {LogLevel.Debug, 2},
+            {LogLevel.Information, 3},
+            {LogLevel.Warning, 4},
+            {LogLevel.Error, 6},
+            {LogLevel.Critical, 7},
+            {LogLevel.None, 8}
+        };
+
         private readonly IOptions<AzureTableLoggerOptions> _options;
 
-        public AzureTableLogger(IOptions<AzureTableLoggerOptions> options, IHttpContextAccessor httpContextAccessor)
+        public AzureTableLogger(
+            IOptions<AzureTableLoggerOptions> options,
+            IHttpContextAccessor httpContextAccessor,
+            ICloudTableClientProviderFactory cloudTableClientProviderFactory)
         {
             _options = options;
             _httpContextAccessor = httpContextAccessor;
 
-            var storageAccount = CloudStorageAccount.Parse(options.Value.StorageConnectionString);
-            _cloudTableClient = storageAccount.CreateCloudTableClient();
-
-            LogsTable = _cloudTableClient.GetTableReference(options.Value.LogsTableName);
+            var cloudTableClientProvider = cloudTableClientProviderFactory.Create(options);
+            _cloudTableClient = cloudTableClientProvider.GetTableClient();
+            LogsTable = cloudTableClientProvider.GetCloudTable(options.Value.LogsTableName);
         }
 
         public CloudTable LogsTable { get; }
@@ -53,6 +69,9 @@ namespace FM.AzureTableLogger
             if (!LogsTable.Exists())
                 CreateTablesIfNotExist().Wait();
 
+            if (!IsEnabled(logLevel))
+                return;
+
             var username = "anon";
             var requestId = "N/A";
 
@@ -77,7 +96,10 @@ namespace FM.AzureTableLogger
 
         public bool IsEnabled(LogLevel logLevel)
         {
-            return _options.Value.MinimumLogLevel < logLevel;
+            var minimumLogLevel = _logLevels[_options.Value.MinimumLogLevel];
+            var checkLogLevel = _logLevels[logLevel];
+
+            return checkLogLevel >= minimumLogLevel;
         }
 
         public IDisposable BeginScope<TState>(TState state)

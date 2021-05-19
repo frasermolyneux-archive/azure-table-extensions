@@ -1,5 +1,6 @@
 ﻿using System;
 using FM.AzureTableLogger.Config;
+using FM.AzureTableLogger.Factories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FM.AzureTableLogger.Extensions
@@ -13,6 +14,7 @@ namespace FM.AzureTableLogger.Extensions
             serviceCollection.Configure(options);
             // Add singleton instance that can be injected directly to provide access to health check and clean up functions
             serviceCollection.AddSingleton<AzureTableLogger>();
+            serviceCollection.AddSingleton<ICloudTableClientProviderFactory, CloudTableClientProviderFactory>();
 
             serviceCollection.AddLogging(
                 logging => { logging.AddAzureTableLogger(); });
