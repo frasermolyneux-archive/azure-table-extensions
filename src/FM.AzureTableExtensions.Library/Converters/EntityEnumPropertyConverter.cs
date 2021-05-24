@@ -34,7 +34,7 @@ namespace FM.AzureTableExtensions.Library.Converters
                     }
                     catch
                     {
-                        throw new Exception($"Could not set {customProperty.Name} value to null")
+                        throw new Exception($"Could not set {customProperty.Name} value to null");
                     }
         }
     }
