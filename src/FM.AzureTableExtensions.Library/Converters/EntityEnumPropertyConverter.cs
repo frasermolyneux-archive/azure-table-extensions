@@ -13,15 +13,29 @@ namespace FM.AzureTableExtensions.Library.Converters
             entity.GetType().GetProperties()
                 .Where(x => x.GetCustomAttributes(typeof(EntityEnumPropertyConverterAttribute), false).Any())
                 .ToList()
-                .ForEach(x => results.Add(x.Name, new EntityProperty(x.GetValue(entity) != null ? x.GetValue(entity).ToString() : null)));
+                .ForEach(x => results.Add(x.Name,
+                    new EntityProperty(x.GetValue(entity) != null ? x.GetValue(entity).ToString() : null)));
         }
 
         public static void Deserialize<TEntity>(TEntity entity, IDictionary<string, EntityProperty> properties)
         {
-            entity.GetType().GetProperties()
+            var customProperties = entity.GetType().GetProperties()
                 .Where(x => x.GetCustomAttributes(typeof(EntityEnumPropertyConverterAttribute), false).Any())
-                .ToList()
-                .ForEach(x => x.SetValue(entity, Enum.Parse(x.PropertyType, properties[x.Name].StringValue)));
+                .ToList();
+
+            foreach (var customProperty in customProperties)
+                if (properties.ContainsKey(customProperty.Name))
+                    customProperty.SetValue(entity,
+                        Enum.Parse(customProperty.PropertyType, properties[customProperty.Name].StringValue));
+                else
+                    try
+                    {
+                        customProperty.SetValue(entity, null);
+                    }
+                    catch
+                    {
+                        throw new Exception($"Could not set {customProperty.Name} value to null")
+                    }
         }
     }
 }
