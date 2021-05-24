@@ -10,6 +10,7 @@ namespace FM.AzureTableExtensions.Library
         {
             var results = base.WriteEntity(operationContext);
             EntityJsonPropertyConverter.Serialize(this, results);
+            NullableEntityEnumPropertyConverter.Serialize(this, results);
             EntityEnumPropertyConverter.Serialize(this, results);
             return results;
         }
@@ -19,6 +20,7 @@ namespace FM.AzureTableExtensions.Library
         {
             base.ReadEntity(properties, operationContext);
             EntityJsonPropertyConverter.Deserialize(this, properties);
+            NullableEntityEnumPropertyConverter.Deserialize(this, properties);
             EntityEnumPropertyConverter.Deserialize(this, properties);
         }
     }
