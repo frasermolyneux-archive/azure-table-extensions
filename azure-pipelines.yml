@@ -15,7 +15,7 @@ variables:
   versionMinor: 0
 
 stages:
-- stage: dependency-check
+- stage: dependency_check
   jobs:
   - template: dependency-check.yml
 
