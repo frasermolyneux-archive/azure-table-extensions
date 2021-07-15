@@ -15,6 +15,10 @@ variables:
   versionMinor: 0
 
 stages:
+- stage: dependency-check
+  jobs:
+  - template: dependency-check.yml
+
 - stage: build
   jobs:
   - job: build
