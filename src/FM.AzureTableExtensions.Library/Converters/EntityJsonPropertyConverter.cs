@@ -31,8 +31,7 @@ namespace FM.AzureTableExtensions.Library.Converters
                         }
                         catch (Exception e)
                         {
-                            x.SetValue(entity,
-                                JsonConvert.DeserializeObject(properties[x.Name].StringValue, null))
+                            x.SetValue(entity, null)
                         }
                     });
         }
