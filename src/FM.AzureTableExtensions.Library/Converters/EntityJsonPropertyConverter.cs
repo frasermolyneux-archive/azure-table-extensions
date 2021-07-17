@@ -21,8 +21,20 @@ namespace FM.AzureTableExtensions.Library.Converters
             entity.GetType().GetProperties()
                 .Where(x => x.GetCustomAttributes(typeof(EntityJsonPropertyConverterAttribute), false).Any())
                 .ToList()
-                .ForEach(x => x.SetValue(entity,
-                    JsonConvert.DeserializeObject(properties[x.Name].StringValue, x.PropertyType)));
+                .ForEach(
+                    x =>
+                    {
+                        try
+                        {
+                            x.SetValue(entity,
+                                JsonConvert.DeserializeObject(properties[x.Name].StringValue, x.PropertyType))
+                        }
+                        catch (Exception e)
+                        {
+                            x.SetValue(entity,
+                                JsonConvert.DeserializeObject(properties[x.Name].StringValue, null))
+                        }
+                    });
         }
     }
 }
