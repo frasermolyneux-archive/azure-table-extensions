@@ -27,11 +27,11 @@ namespace FM.AzureTableExtensions.Library.Converters
                         try
                         {
                             x.SetValue(entity,
-                                JsonConvert.DeserializeObject(properties[x.Name].StringValue, x.PropertyType))
+                                JsonConvert.DeserializeObject(properties[x.Name].StringValue, x.PropertyType));
                         }
-                        catch (Exception e)
+                        catch
                         {
-                            x.SetValue(entity, null)
+                            x.SetValue(entity, null);
                         }
                     });
         }
