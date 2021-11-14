@@ -1,0 +1,18 @@
+schedules:
+  - cron: "0 3 * * 0"
+    displayName: Weekly Build
+    branches:
+      include:
+      - main
+
+resources:
+  repositories:
+    - repository: ado-pipeline-templates
+      type: github
+      name: frasermolyneux/ado-pipeline-templates
+      endpoint: Personal
+
+stages:
+- stage: dependency_check
+  jobs:
+  - template: jobs/dependency-check.yml@ado-pipeline-templates
