@@ -1,0 +1,17 @@
+trigger:
+  branches:
+    include:
+    - '*'
+
+resources:
+  repositories:
+    - repository: ado-pipeline-templates
+      type: github
+      name: frasermolyneux/ado-pipeline-templates
+      endpoint: Personal
+
+stages:
+- stage: validate
+
+  jobs:
+  - template: jobs/build-net-core-projects.yml@ado-pipeline-templates

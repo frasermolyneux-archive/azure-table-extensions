@@ -14,5 +14,6 @@ resources:
 
 stages:
 - stage: dependency_check
+
   jobs:
   - template: jobs/dependency-check.yml@ado-pipeline-templates
